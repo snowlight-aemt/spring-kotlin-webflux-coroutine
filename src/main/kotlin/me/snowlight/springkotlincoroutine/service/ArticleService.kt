@@ -6,6 +6,7 @@ import me.snowlight.springkotlincoroutine.model.Article
 import me.snowlight.springkotlincoroutine.model.ArticleRepository
 import org.springframework.stereotype.Service
 
+// LEARN MVC , WebFlux , Coroutine 서비스의 코드 형태가 많이 다르다.
 @Service
 class ArticleService(
     private val repository: ArticleRepository,
