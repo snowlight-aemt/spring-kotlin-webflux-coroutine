@@ -59,4 +59,14 @@ class ArticleServiceTest(
         get.createdAt shouldNotBe null
         get.updatedAt shouldNotBe null
     }
+
+    "delete" {
+        val prevCnt  =repository.count()
+        val created = service.create(ReqCreate(title = "title 1", body = "body 1", authorId = 100))
+        val currCnt  =repository.count()
+
+        repository.count() shouldBe prevCnt + 1
+        service.delete(created.id)
+        repository.count() shouldBe prevCnt
+    }
 })

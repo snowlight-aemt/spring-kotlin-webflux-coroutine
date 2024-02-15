@@ -34,4 +34,8 @@ class ArticleService(
             request.authorId?.let { authorId = it }
         })
     }
+
+    suspend fun delete(id: Long) {
+        return repository.deleteById(id)
+    }
 }
