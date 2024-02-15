@@ -1,5 +1,6 @@
 package me.snowlight.springkotlincoroutine.service
 
+import kotlinx.coroutines.flow.Flow
 import me.snowlight.springkotlincoroutine.exception.NoArticleFound
 import me.snowlight.springkotlincoroutine.model.Article
 import me.snowlight.springkotlincoroutine.model.ArticleRepository
@@ -15,5 +16,13 @@ class ArticleService(
 
     suspend fun get(id: Long): Article {
         return repository.findById(id) ?: throw NoArticleFound("id: $id")
+    }
+
+    suspend fun getAll(title: String? = null): Flow<Article> {
+        return if (title.isNullOrEmpty()) {
+            repository.findAll()
+        } else {
+            repository.findAllByTitleContains(title);
+        }
     }
 }
