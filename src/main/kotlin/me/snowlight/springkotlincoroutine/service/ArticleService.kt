@@ -25,4 +25,13 @@ class ArticleService(
             repository.findAllByTitleContains(title);
         }
     }
+
+    suspend fun update(id: Long, request: ReqUpdate): Article {
+        val article = repository.findById(id) ?: throw NoArticleFound("id: $id")
+        return repository.save(article.apply {
+            request.title?.let { title = it }
+            request.body?.let { body = it }
+            request.authorId?.let { authorId = it }
+        })
+    }
 }
