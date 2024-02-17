@@ -12,7 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ActiveProfiles
 
 @SpringBootTest
-@ActiveProfiles("text")
+@ActiveProfiles("test")
 class SpringKotlinCoroutineApplicationTests(
     @Autowired private val repository: ArticleRepository
 ): StringSpec({

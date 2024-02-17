@@ -15,7 +15,7 @@ import org.springframework.transaction.reactive.TransactionalOperator
 import org.springframework.transaction.reactive.executeAndAwait
 
 @SpringBootTest
-@ActiveProfiles("text")
+@ActiveProfiles("test")
 class ArticleServiceTest(
     @Autowired private val service: ArticleService,
     @Autowired private val repository: ArticleRepository,

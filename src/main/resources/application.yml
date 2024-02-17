@@ -12,11 +12,18 @@ spring:
     url: r2dbc:pool:mariadb://localhost:3306/sample
     username: user
     password: 1234
-
+logging:
+  level:
+    me.snowlight.springkotlincoroutine: debug
+    org.springframework.r2dbc.core: debug
+    org.springframework.r2dbc.connection: debug
 ---
 spring:
   config:
     activate:
-      on-profile: text
+      on-profile: test
   r2dbc:
     url: r2dbc:pool:h2:mem://localhost/sample
+  sql:
+    init:
+      mode: embedded

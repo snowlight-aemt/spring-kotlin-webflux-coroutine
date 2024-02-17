@@ -17,7 +17,7 @@ import java.time.temporal.ChronoUnit
 
 // LEARN 리액트 에서는 WebTestClient 로 테스트를 해야 한다.
 @SpringBootTest
-@ActiveProfiles("text")
+@ActiveProfiles("test")
 class ArticleControllerTest(
     @Autowired private val service: ArticleService,
     @Autowired private val repository: ArticleRepository,
