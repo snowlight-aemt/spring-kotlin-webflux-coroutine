@@ -12,3 +12,11 @@ spring:
     url: r2dbc:pool:mariadb://localhost:3306/sample
     username: user
     password: 1234
+
+---
+spring:
+  config:
+    activate:
+      on-profile: text
+  r2dbc:
+    url: r2dbc:pool:h2:mem://localhost/sample

@@ -9,11 +9,13 @@ import kotlinx.coroutines.flow.toList
 import me.snowlight.springkotlincoroutine.model.ArticleRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.context.ActiveProfiles
 import org.springframework.transaction.ReactiveTransaction
 import org.springframework.transaction.reactive.TransactionalOperator
 import org.springframework.transaction.reactive.executeAndAwait
 
 @SpringBootTest
+@ActiveProfiles("text")
 class ArticleServiceTest(
     @Autowired private val service: ArticleService,
     @Autowired private val repository: ArticleRepository,

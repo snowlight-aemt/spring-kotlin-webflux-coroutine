@@ -11,11 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.ApplicationContext
 import org.springframework.http.MediaType
+import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.reactive.server.WebTestClient
 import java.time.temporal.ChronoUnit
 
 // LEARN 리액트 에서는 WebTestClient 로 테스트를 해야 한다.
 @SpringBootTest
+@ActiveProfiles("text")
 class ArticleControllerTest(
     @Autowired private val service: ArticleService,
     @Autowired private val repository: ArticleRepository,
