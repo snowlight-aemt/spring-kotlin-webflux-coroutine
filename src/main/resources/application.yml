@@ -1,4 +1,8 @@
 spring:
+  profiles:
+    active: stress
+---
+spring:
   sql:
     init:
       mode: always
@@ -27,3 +31,11 @@ spring:
   sql:
     init:
       mode: embedded
+---
+spring:
+  config:
+    activate:
+      on-profile: stress
+  output:
+    ansi:
+      enabled: never
