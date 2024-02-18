@@ -39,3 +39,8 @@ spring:
   output:
     ansi:
       enabled: never
+logging:
+  level:
+    me.snowlight.springkotlincoroutine: debug
+    org.springframework.r2dbc.core: off
+    org.springframework.r2dbc.connection: off
