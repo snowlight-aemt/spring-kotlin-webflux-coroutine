@@ -1,0 +1,9 @@
+version: "3.8"
+services:
+  webflux-coroutine:
+    container_name: webflux-coroutine
+    image: spring-kotlin-coroutine:0.0.1-SNAPSHOT
+    ports:
+      - "8080:8080"
+    environment:
+      - spring.r2dbc.url=r2dbc:pool:mariadb://192.168.0.17:3306/sample
