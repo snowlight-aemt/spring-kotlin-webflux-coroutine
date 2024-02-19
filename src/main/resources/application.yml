@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: stress
+    active: local
 ---
 spring:
   sql:
@@ -18,9 +18,22 @@ spring:
     password: 1234
 logging:
   level:
-    me.snowlight.springkotlincoroutine: debug
+    me.snowlight: debug
     org.springframework.r2dbc.core: debug
     org.springframework.r2dbc.connection: debug
+  pattern:
+#    console: "%d{HH:mm:ss.SSS}|%highlight(%-5level)|%X{txid:-}|%green(%t)|%logger|%blue(\\(%F:%L\\))|%msg%n"
+    console: "%d{HH:mm:ss.SSS}|%highlight(%-5level)|%X{txid:-}|%green(%t)|%blue(\\(%F:%L\\))|%msg%n"
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+  r2dbc:
+    url: r2dbc:pool:h2:mem://localhost/sample
+  sql:
+    init:
+      mode: embedded
 ---
 spring:
   config:
