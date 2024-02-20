@@ -9,13 +9,19 @@ import jakarta.validation.constraints.NotEmpty
 import kotlinx.coroutines.delay
 import me.snowlight.springkotlincoroutine.service.AdvancedService
 import mu.KotlinLogging
+import org.springframework.http.HttpStatus
+import org.springframework.validation.BindException
+import org.springframework.validation.BindingResult
+import org.springframework.web.bind.WebDataBinder
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import kotlin.reflect.KClass
+import kotlin.reflect.KProperty
 
 private val logger = KotlinLogging.logger {}
 
@@ -33,18 +39,32 @@ class AdvancedController(
     }
 
     @PutMapping("/test/error")
-    suspend fun error(@RequestBody @Valid regErrorTest: ReqErrorTest) {
+    suspend fun error(
+        @RequestBody @Valid regErrorTest: ReqErrorTest
+    ) {
         logger.debug { "request" }
+
+        if (regErrorTest.message == "error") {
+            throw InvalidParameter(regErrorTest, regErrorTest::message, "custom code", "custom msg")
+        }
 //        throw RuntimeException("yahoo !")
     }
 }
+
+@ResponseStatus(HttpStatus.BAD_REQUEST)
+class InvalidParameter(request: Any, field: KProperty<*>, code: String = "", message: String = "") : BindException(
+    WebDataBinder(request, request::class.simpleName!!).bindingResult.apply {
+        rejectValue(field.name, code, message)
+    }
+)
 
 data class ReqErrorTest (
     @field:NotEmpty
     val id: String?,
     val age: Int?,
     @field:DataString
-    val birthday: String?
+    val birthday: String?,
+    val message: String?,
 )
 
 @Target(AnnotationTarget.FIELD)
