@@ -34,6 +34,12 @@ spring:
   sql:
     init:
       mode: always
+server:
+  error:
+    include-exception: true
+    include-binding-errors: always
+    include-message: always
+    include-stacktrace: always
 ---
 spring:
   config:
@@ -57,3 +63,9 @@ logging:
     me.snowlight.springkotlincoroutine: debug
     org.springframework.r2dbc.core: off
     org.springframework.r2dbc.connection: off
+---
+
+server:
+  error:
+    include-binding-errors: never
+    include-stacktrace: never
