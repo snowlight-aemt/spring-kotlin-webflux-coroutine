@@ -1,6 +1,7 @@
 package me.snowlight.springkotlincoroutine.config
 
 import io.micrometer.context.ContextRegistry
+import me.snowlight.springkotlincoroutine.config.extension.txid
 import mu.KotlinLogging
 import org.slf4j.MDC
 import org.springframework.core.annotation.Order
@@ -22,6 +23,10 @@ val KEY_TXID = "txid"
 @Order(1)
 class MdcFilter: WebFilter {
     init {
+        propagateMdcThroughReactor()
+    }
+
+    private fun propagateMdcThroughReactor() {
         Hooks.enableAutomaticContextPropagation()
         ContextRegistry.getInstance().registerThreadLocalAccessor(
             KEY_TXID,

@@ -1,4 +1,4 @@
-package me.snowlight.springkotlincoroutine.config
+package me.snowlight.springkotlincoroutine.config.extension
 
 import org.springframework.http.server.reactive.ServerHttpRequest
 import java.util.HashMap

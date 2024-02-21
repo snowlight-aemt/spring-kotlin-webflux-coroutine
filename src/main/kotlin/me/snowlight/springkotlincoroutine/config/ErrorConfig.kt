@@ -1,5 +1,6 @@
 package me.snowlight.springkotlincoroutine.config
 
+import me.snowlight.springkotlincoroutine.config.extension.txid
 import mu.KotlinLogging
 import org.slf4j.MDC
 import org.springframework.boot.web.error.ErrorAttributeOptions
