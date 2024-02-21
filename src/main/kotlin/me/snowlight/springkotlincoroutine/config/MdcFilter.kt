@@ -13,7 +13,6 @@ import reactor.core.publisher.Mono
 import reactor.util.context.Context
 import java.util.*
 
-val mapReqIdToTxId = HashMap<String, String>()
 
 private val logger = KotlinLogging.logger {}
 
@@ -41,7 +40,7 @@ class MdcFilter: WebFilter {
         return chain.filter(exchange).contextWrite {
             Context.of(KEY_TXID, uuid)
         }.doOnError {
-            mapReqIdToTxId[exchange.request.id] = uuid
+            exchange.request.txid = uuid;
         }
     }
 }

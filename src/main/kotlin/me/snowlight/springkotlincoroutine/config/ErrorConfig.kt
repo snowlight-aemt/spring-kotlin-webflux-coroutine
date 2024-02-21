@@ -23,7 +23,7 @@ class ErrorConfig {
             ): MutableMap<String, Any> {
 
                 val request = serverRequest.exchange().request
-                val txId = mapReqIdToTxId[request.id] ?: ""
+                val txId = request.txid ?: ""
 
                 MDC.put(KEY_TXID, txId)
 
@@ -38,7 +38,7 @@ class ErrorConfig {
                         put(KEY_TXID, txId)
                     }
                 } finally {
-                    mapReqIdToTxId[KEY_TXID]
+                    request.txid = null
                     MDC.remove(KEY_TXID)
                 }
             }
