@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: stress
+    active: local
 ---
 spring:
   sql:
@@ -18,9 +18,30 @@ spring:
     password: 1234
 logging:
   level:
-    me.snowlight.springkotlincoroutine: debug
+    me.snowlight: debug
     org.springframework.r2dbc.core: debug
     org.springframework.r2dbc.connection: debug
+    org.springframework.boot.autoconfigure.web.reactive.error.AbstractErrorWebExceptionHandler: off
+    org.springframework.http.HttpLogging: off
+    org.springframework.web.HttpLogging: off
+  pattern:
+    console: "%d{HH:mm:ss.SSS}|%highlight(%-5level)|%X{txid:-}|%green(%t)|%logger|%blue(\\(%F:%L\\))|%msg%n"
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+  r2dbc:
+    url: r2dbc:pool:h2:file:///./sample
+  sql:
+    init:
+      mode: always
+server:
+  error:
+    include-exception: true
+    include-binding-errors: always
+    include-message: always
+    include-stacktrace: always
 ---
 spring:
   config:
@@ -44,3 +65,13 @@ logging:
     me.snowlight.springkotlincoroutine: debug
     org.springframework.r2dbc.core: off
     org.springframework.r2dbc.connection: off
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+server:
+  error:
+    include-binding-errors: never
+    include-stacktrace: never
