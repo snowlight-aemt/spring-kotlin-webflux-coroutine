@@ -13,10 +13,11 @@ import reactor.core.publisher.Mono
 import reactor.util.context.Context
 import java.util.*
 
+val mapReqIdToTxId = HashMap<String, String>()
 
 private val logger = KotlinLogging.logger {}
 
-private const val KEY_TXID = "txid"
+val KEY_TXID = "txid"
 
 @Component
 @Order(1)
@@ -35,9 +36,12 @@ class MdcFilter: WebFilter {
         val uuid = exchange.request.headers["x-txid"]?.firstOrNull()?:"${UUID.randomUUID()}"
         // "%d{HH:mm:ss.SSS}|%highlight(%-5level)|%X{txid:-}|%green(%t)|%blue(\\(%F:%L\\))|%msg%n"
         logger.debug { "Filter" }
+        logger.debug { "request id : ${exchange.request.id}" }
         MDC.put(KEY_TXID, uuid)
         return chain.filter(exchange).contextWrite {
             Context.of(KEY_TXID, uuid)
+        }.doOnError {
+            mapReqIdToTxId[exchange.request.id] = uuid
         }
     }
 }

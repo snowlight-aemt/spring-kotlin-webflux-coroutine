@@ -44,10 +44,10 @@ class AdvancedController(
     ) {
         logger.debug { "request" }
 
-        if (regErrorTest.message == "error") {
-            throw InvalidParameter(regErrorTest, regErrorTest::message, "custom code", "custom msg")
-        }
-//        throw RuntimeException("yahoo !")
+//        if (regErrorTest.message == "error") {
+//            throw InvalidParameter(regErrorTest, regErrorTest::message, "custom code", "custom msg")
+//        }
+        throw RuntimeException("yahoo !")
     }
 }
 
