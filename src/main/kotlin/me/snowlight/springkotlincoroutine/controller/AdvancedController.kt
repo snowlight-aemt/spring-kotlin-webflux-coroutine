@@ -5,8 +5,10 @@ import jakarta.validation.constraints.NotEmpty
 import kotlinx.coroutines.delay
 import me.snowlight.springkotlincoroutine.config.validator.DataString
 import me.snowlight.springkotlincoroutine.service.AdvancedService
+import me.snowlight.springkotlincoroutine.service.ExternalApi
 import mu.KotlinLogging
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
@@ -16,6 +18,7 @@ private val logger = KotlinLogging.logger {}
 @RestController
 class AdvancedController(
     private val service: AdvancedService,
+    private val externalApi: ExternalApi,
 ) {
 
     @GetMapping("/test/mdc")
@@ -40,6 +43,16 @@ class AdvancedController(
 
         // DefaultErrorAttributes 예제 - trace ID (MDC)
         // throw RuntimeException("yahoo !")
+    }
+
+    @GetMapping("/delay")
+    suspend fun delay() {
+        externalApi.delay()
+    }
+
+    @GetMapping("/circuit/{flag}", "/circuit", "/circuit/")
+    suspend fun delay(@PathVariable flag: String) {
+        externalApi.testCircuitBreaker(flag)
     }
 }
 

@@ -19,6 +19,10 @@ repositories {
 }
 
 dependencies {
+    implementation("io.github.resilience4j:resilience4j-all:2.2.0")
+    implementation("io.github.resilience4j:resilience4j-kotlin:2.2.0")
+
+
     implementation("io.micrometer:context-propagation:1.0.5")
     implementation("org.springframework.boot:spring-boot-starter-aop")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-slf4j:1.7.3")

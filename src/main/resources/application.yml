@@ -16,6 +16,10 @@ spring:
     url: r2dbc:pool:mariadb://localhost:3306/sample
     username: user
     password: 1234
+
+api:
+  externalUrl: "http://localhost:8081"
+
 logging:
   level:
     me.snowlight: debug
