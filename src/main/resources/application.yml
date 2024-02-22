@@ -18,7 +18,7 @@ spring:
     password: 1234
 
 api:
-  externalUrl: "http://localhost:8081"
+  externalUrl: "http://localhost:8080"
 
 logging:
   level:

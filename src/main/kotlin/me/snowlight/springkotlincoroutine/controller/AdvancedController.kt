@@ -51,8 +51,8 @@ class AdvancedController(
     }
 
     @GetMapping("/circuit/{flag}", "/circuit", "/circuit/")
-    suspend fun delay(@PathVariable flag: String) {
-        externalApi.testCircuitBreaker(flag)
+    suspend fun delay(@PathVariable flag: String): String {
+        return externalApi.testCircuitBreaker(flag)
     }
 }
 

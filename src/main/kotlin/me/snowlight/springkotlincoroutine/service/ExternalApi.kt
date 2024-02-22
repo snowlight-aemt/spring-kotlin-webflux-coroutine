@@ -1,8 +1,13 @@
 package me.snowlight.springkotlincoroutine.service
 
+import io.github.resilience4j.circuitbreaker.CallNotPermittedException
 import io.github.resilience4j.circuitbreaker.CircuitBreaker
 import io.github.resilience4j.kotlin.circuitbreaker.CircuitBreakerConfig
 import io.github.resilience4j.kotlin.circuitbreaker.executeSuspendFunction
+import io.github.resilience4j.kotlin.ratelimiter.RateLimiterConfig
+import io.github.resilience4j.kotlin.ratelimiter.executeSuspendFunction
+import io.github.resilience4j.ratelimiter.RateLimiter
+import io.github.resilience4j.ratelimiter.RequestNotPermitted
 import mu.KotlinLogging
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpHeaders
@@ -29,17 +34,21 @@ class ExternalApi(
 
     suspend fun testCircuitBreaker(flag: String): String {
         logger.debug { "1. request call" }
-        return circuitBreaker.executeSuspendFunction {
-            logger.debug { "2. call external "}
-             try {
-                 client.get().uri("/circuit/child/$flag").retrieve().awaitBody()
-             } finally {
-                 logger.debug {" 3. done "}
-             }
+        return try {
+            rateLimiter.executeSuspendFunction {
+                circuitBreaker.executeSuspendFunction {
+                    logger.debug { "2. call external "}
+                    client.get().uri("/circuit/child/$flag").retrieve().awaitBody()
+                }
+            }
+        } catch (e: CallNotPermittedException) {
+            "call layer (blocked by circuit breaker"
+        } catch (e: RequestNotPermitted) {
+            "call later (blocked by rate limiter)"
         }
     }
 
-    /** LEARN
+    /** LEARN CircuitBreaker
      *   close : 회로가 닫힘 - > 장상
      *   open : 회로가 열림 - > 차단
      *   half-open : 반 열림
@@ -51,5 +60,14 @@ class ExternalApi(
         waitDurationInOpenState(10.seconds.toJavaDuration())
         // half-open 상태에서 허용할 요청 수
         permittedNumberOfCallsInHalfOpenState(3)
+    })
+
+    /** LEARN Rate Limiter
+     *   고도한 호출을 막기 위해서 (실패와 상관없음)
+     */
+    val rateLimiter = RateLimiter.of("rps-limiter", RateLimiterConfig {
+        limitForPeriod(2)
+        timeoutDuration(5.seconds.toJavaDuration())
+        limitRefreshPeriod(10.seconds.toJavaDuration())
     })
 }
