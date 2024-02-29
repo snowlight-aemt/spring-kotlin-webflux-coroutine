@@ -19,6 +19,8 @@ repositories {
 }
 
 dependencies {
+    implementation("org.springframework.boot:spring-boot-starter-data-redis-reactive")
+
     implementation("io.github.resilience4j:resilience4j-all:2.2.0")
     implementation("io.github.resilience4j:resilience4j-kotlin:2.2.0")
 

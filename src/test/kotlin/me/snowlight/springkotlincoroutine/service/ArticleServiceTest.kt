@@ -61,8 +61,8 @@ class ArticleServiceTest(
             service.create(ReqCreate(title = "title matched", body = "body 3", authorId = 300))
 
             // toList : Flow 를 다 모아서 list 를 만드다.
-            service.getAll().toList().size shouldBe 3
-            service.getAll("title matched").toList().size shouldBe 1
+            service.getAll(QryArticle(null, null, null, null)).toList().size shouldBe 3
+            service.getAll(QryArticle(title = "title matched", null, null, null)).toList().size shouldBe 1
         }
     }
 
