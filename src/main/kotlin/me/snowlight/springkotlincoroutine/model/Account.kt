@@ -9,8 +9,8 @@ class Account(
     @Id
     var id: Long = 0,
     var balance: Long = 0,
-    @Version
-    var version: Int = 0,
+//    @Version
+//    var version: Int = 0,
 ) : BaseEntity() {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

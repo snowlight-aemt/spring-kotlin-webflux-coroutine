@@ -17,7 +17,8 @@ class AccountService(
 
     @Transactional
     suspend fun deposit(id: Long, amount: Long): Account {
-        return accountRepository.findById(id)?.let {
+        return accountRepository.findLockedById(id)?.let {
+//        return accountRepository.findById(id)?.let {
             delay(3000)
             it.balance += amount
             accountRepository.save(it)
