@@ -1,6 +1,7 @@
 package me.snowlight.springkotlincoroutine.service
 
 import me.snowlight.springkotlincoroutine.config.validator.DataString
+import java.io.Serializable
 
 data class QryArticle (
     val title: String?,
@@ -9,4 +10,4 @@ data class QryArticle (
     val from: String?,
     @DataString
     val to: String?,
-)
+): Serializable

@@ -1,8 +1,13 @@
 package me.snowlight.springkotlincoroutine.service
 
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.reactor.awaitSingle
 import kotlinx.coroutines.reactor.awaitSingleOrNull
+import me.snowlight.springkotlincoroutine.config.CacheKey
+import me.snowlight.springkotlincoroutine.config.CacheManager
 import me.snowlight.springkotlincoroutine.config.extension.toLocalDate
 import me.snowlight.springkotlincoroutine.exception.NoArticleFound
 import me.snowlight.springkotlincoroutine.model.Article
@@ -24,19 +29,24 @@ class ArticleService(
     private val repository: ArticleRepository,
     private val dbClient: DatabaseClient,
     redisTemplate: ReactiveRedisTemplate<Any, Any>,
+    private val cacheManager: CacheManager,
 ) {
     // LEARN Thread safe 한가?
     private val ops = redisTemplate.opsForValue()
+
+    init {
+        cacheManager.TTL["/article/get"] = 20.seconds
+        cacheManager.TTL["/article/get/all"] = 20.seconds
+    }
 
     suspend fun create(request: ReqCreate): Article {
         return repository.save(request.toArticle())
     }
 
     suspend fun get(id: Long): Article {
-        val key = SimpleKey("/article/get", id)
-        return ops.get(key).awaitSingleOrNull()?.let { it as Article }
-                    ?: repository.findById(id)?.also { ops.set(key, it, 20.seconds.toJavaDuration()).awaitSingle() }
-                    ?: throw NoArticleFound("id: $id")
+        val key = CacheKey("/article/get", id)
+        return cacheManager.get(key) { repository.findById(id) }
+            ?: throw NoArticleFound("id: $id")
     }
 
 //    suspend fun getAll(title: String? = null): Flow<Article> {
@@ -46,6 +56,13 @@ class ArticleService(
 //            repository.findAllByTitleContains(title);
 //        }
 //    }
+
+    suspend fun getAllCached(request: QryArticle): Flow<Article> {
+        val key = CacheKey("/article/get/all", request)
+        return cacheManager.get<List<Article>>(key) {
+            getAll(request).toList()
+        }?.asFlow() ?: emptyFlow()
+    }
 
     suspend fun getAll(request: QryArticle): Flow<Article> {
         val params = HashMap<String, Any>()
@@ -91,15 +108,15 @@ class ArticleService(
             request.body?.let { body = it }
             request.authorId?.let { authorId = it }
         }).also {
-            val key = SimpleKey("/article/get", id)
-            ops.delete(key).awaitSingle()
+            val key = CacheKey("/article/get", id)
+            cacheManager.delete(key)
         }
     }
 
     suspend fun delete(id: Long) {
         return repository.deleteById(id).also {
-            val key = SimpleKey("/article/get", id)
-            ops.delete(key).awaitSingle()
+            val key = CacheKey("/article/get", id)
+            cacheManager.delete(key)
         }
     }
 }
