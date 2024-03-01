@@ -20,11 +20,9 @@ class DateValidator: ConstraintValidator<DataString, String> {
     override fun isValid(value: String?, context: ConstraintValidatorContext?): Boolean {
         val text = value?.filter { it.isDigit() } ?: return true
         return kotlin.runCatching {
-            text.toLocalDate("yyyyMMdd").let {
+            text.toLocalDate().let {
                 if(text != it.toString("yyyyMMdd")) null else true
             }
         }.getOrNull() != null
-
     }
-
 }

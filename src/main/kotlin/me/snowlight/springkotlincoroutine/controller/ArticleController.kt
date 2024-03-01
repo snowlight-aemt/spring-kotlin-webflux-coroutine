@@ -3,6 +3,7 @@ package me.snowlight.springkotlincoroutine.controller
 import kotlinx.coroutines.flow.Flow
 import me.snowlight.springkotlincoroutine.model.Article
 import me.snowlight.springkotlincoroutine.service.ArticleService
+import me.snowlight.springkotlincoroutine.service.QryArticle
 import me.snowlight.springkotlincoroutine.service.ReqCreate
 import me.snowlight.springkotlincoroutine.service.ReqUpdate
 import org.springframework.http.HttpStatus
@@ -33,9 +34,15 @@ class ArticleController(
         return service.get(id)
     }
 
+//    @GetMapping("/all")
+//    suspend fun getAll(title: String): Flow<Article> {
+//        return service.getAll(title)
+//    }
+
     @GetMapping("/all")
-    suspend fun getAll(title: String): Flow<Article> {
-        return service.getAll(title)
+    suspend fun getAll(request: QryArticle): Flow<Article> {
+//        return service.getAll(request)
+        return service.getAllCached(request)
     }
 
     @PutMapping("/{id}")

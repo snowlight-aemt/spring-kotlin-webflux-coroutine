@@ -1,9 +1,7 @@
 package me.snowlight.springkotlincoroutine.service
 
 import io.kotest.core.spec.style.StringSpec
-import io.kotest.matchers.ints.shouldBeGreaterThan
 import io.kotest.matchers.shouldBe
-import io.kotest.matchers.shouldNot
 import io.kotest.matchers.shouldNotBe
 import kotlinx.coroutines.flow.toList
 import me.snowlight.springkotlincoroutine.model.ArticleRepository
@@ -61,8 +59,8 @@ class ArticleServiceTest(
             service.create(ReqCreate(title = "title matched", body = "body 3", authorId = 300))
 
             // toList : Flow 를 다 모아서 list 를 만드다.
-            service.getAll().toList().size shouldBe 3
-            service.getAll("title matched").toList().size shouldBe 1
+            service.getAll(QryArticle(null, null, null, null)).toList().size shouldBe 3
+            service.getAll(QryArticle(title = "title matched", null, null, null)).toList().size shouldBe 1
         }
     }
 
