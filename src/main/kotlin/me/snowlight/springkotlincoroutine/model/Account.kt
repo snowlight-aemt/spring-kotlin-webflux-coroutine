@@ -1,6 +1,7 @@
 package me.snowlight.springkotlincoroutine.model
 
 import org.springframework.data.annotation.Id
+import org.springframework.data.annotation.Version
 import org.springframework.data.relational.core.mapping.Table
 
 @Table("TB_ACCOUNT")
@@ -8,6 +9,8 @@ class Account(
     @Id
     var id: Long = 0,
     var balance: Long = 0,
+    @Version
+    var version: Int = 0,
 ) : BaseEntity() {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

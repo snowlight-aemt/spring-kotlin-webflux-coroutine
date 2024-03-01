@@ -20,4 +20,4 @@ INSERT INTO TB_ARTICLE (title, body, author_id, created_at, updated_at) VALUES (
 INSERT INTO TB_ARTICLE (title, body, author_id, created_at, updated_at) VALUES ( 'title 19', 'blabla 19', 1019, '2023-01-19', '2023-01-19' );
 INSERT INTO TB_ARTICLE (title, body, author_id, created_at, updated_at) VALUES ( 'title 20', 'blabla 20', 1020, '2023-01-20', '2023-01-20' );
 
-INSERT INTO TB_ACCOUNT (balance, created_at, updated_at) VALUES (0, '2023-01-20', '2023-01-20' );
+INSERT INTO TB_ACCOUNT (balance, version, created_at, updated_at) VALUES (0, 1, '2023-01-20', '2023-01-20' );
