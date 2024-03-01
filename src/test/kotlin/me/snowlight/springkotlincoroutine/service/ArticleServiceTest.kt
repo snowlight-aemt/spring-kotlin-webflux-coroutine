@@ -1,9 +1,7 @@
 package me.snowlight.springkotlincoroutine.service
 
 import io.kotest.core.spec.style.StringSpec
-import io.kotest.matchers.ints.shouldBeGreaterThan
 import io.kotest.matchers.shouldBe
-import io.kotest.matchers.shouldNot
 import io.kotest.matchers.shouldNotBe
 import kotlinx.coroutines.flow.toList
 import me.snowlight.springkotlincoroutine.model.ArticleRepository

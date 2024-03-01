@@ -57,6 +57,9 @@ spring:
   sql:
     init:
       mode: embedded
+logging:
+  pattern:
+    console: "%d{HH:mm:ss.SSS}|%highlight(%-5level)|%X{txid:-}|%green(%t)|%blue(\\(%F:%L\\))|%msg%n"
 ---
 spring:
   config:
