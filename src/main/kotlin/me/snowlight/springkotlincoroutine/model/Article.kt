@@ -4,11 +4,12 @@ import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.LastModifiedDate
 import org.springframework.data.relational.core.mapping.Table
+import java.io.Serializable
 import java.time.LocalDateTime
 
 // LEARN R2DBC 는 영속성 관리가 없다. 따라서 data class 괜찮다.
 @Table("TB_ARTICLE")
-class Article (
+class Article(
     @Id
     var id: Long = 0,
     var title: String,
@@ -38,7 +39,7 @@ open class BaseEntity(
     var createdAt: LocalDateTime? = null,
     @LastModifiedDate
     var updatedAt: LocalDateTime? = null,
-) {
+) : Serializable {
     override fun toString(): String {
         return "createdAt=$createdAt, updatedAt=$updatedAt"
     }
